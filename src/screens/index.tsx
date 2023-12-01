@@ -1,17 +1,32 @@
+import { useState } from "react";
+
 import { View, Text, FlatList } from "react-native";
 import { styles } from "./styles";
+
 import { Header } from "../components/Header";
 import { Task } from "../components/Task";
-import { useState } from "react";
 import { TaskDTO } from "../dtos/TaskDTO";
 import { Empty } from "../components/Empty";
+import { uuid } from "../utils/uuid";
 
 export function HomeScreen() {
   const [tasks, setTasks] = useState<TaskDTO[]>([])
+  const [newTask, setNewTask] = useState('')
+
+  function handleTaskAdd() {
+    setTasks((tasks) => [
+      ...tasks,
+      {id: uuid(), isCompleted: false, title: newTask}
+    ])
+  }
   
   return(
     <View style={styles.container}>
-      <Header/>
+      <Header 
+        task={newTask} 
+        onChangeText={setNewTask}
+        onPress={handleTaskAdd}
+      />
       <View style={styles.tasksContainer}>
         <View style={styles.info}>
           <View style={styles.row}>
