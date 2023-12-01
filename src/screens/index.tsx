@@ -14,10 +14,13 @@ export function HomeScreen() {
   const [newTask, setNewTask] = useState('')
 
   function handleTaskAdd() {
-    setTasks((tasks) => [
-      ...tasks,
-      {id: uuid(), isCompleted: false, title: newTask}
-    ])
+    if(newTask !== '' && newTask.length >= 5) {
+      setTasks((tasks) => [
+        ...tasks,
+        {id: uuid(), isCompleted: false, title: newTask.trim()}
+      ])
+      setNewTask('')
+    }
   }
   
   return(
