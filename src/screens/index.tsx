@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, Alert } from "react-native";
 import { styles } from "./styles";
 
 import { Header } from "../components/Header";
@@ -23,8 +23,35 @@ export function HomeScreen() {
     }
   }
 
-  function handleTAskDone(id: string) {}
-  function handleTaskDeleted(id: string){}
+  function handleTAskDone(id: string) {
+    setTasks((task) => task.map(
+      (task) => {
+        task.id === id 
+        ? (task.isCompleted = !task.isCompleted)
+        : null
+        return task
+      }
+    ))
+  }
+  function handleTaskDeleted(id: string){
+    Alert.alert('Excluir tarefa', 'Deseja excluir essa tarefa?', 
+    [
+      {
+        text: 'Sim',
+        style: 'default',
+        onPress: () => setTasks((tasks) => 
+          tasks.filter((task) => task.id !== id
+        ))
+      },
+      {
+        text: 'Não',
+        style: 'cancel',
+      }
+    ])
+  }
+
+  const totalTasksCreated = tasks.length
+  const totalTasksCompleted = tasks.filter(({isCompleted}) => isCompleted).length
   
   return(
     <View style={styles.container}>
@@ -38,13 +65,15 @@ export function HomeScreen() {
           <View style={styles.row}>
             <Text style={styles.tasksCreated}>Criadas</Text>
             <View style={styles.counterContainer}>
-              <Text style={styles.counterText}>0</Text>
+              <Text style={styles.counterText}>
+                {totalTasksCreated}
+              </Text>
             </View>
           </View>
           <View style={styles.row}>
             <Text style={styles.tasksDone}>Concluídas</Text>
             <View style={styles.counterContainer}>
-              <Text style={styles.counterText}>0</Text>
+              <Text style={styles.counterText}>{totalTasksCompleted}</Text>
             </View>
           </View>
         </View>
