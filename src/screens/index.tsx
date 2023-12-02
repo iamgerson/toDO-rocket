@@ -22,6 +22,9 @@ export function HomeScreen() {
       setNewTask('')
     }
   }
+
+  function handleTAskDone(id: string) {}
+  function handleTaskDeleted(id: string){}
   
   return(
     <View style={styles.container}>
@@ -48,12 +51,13 @@ export function HomeScreen() {
 
         <FlatList 
           data={tasks}
-          keyExtractor={(tasks) => tasks.id!}
+          keyExtractor={(tasks) => tasks.id}
           renderItem={({item}) => (
           <Task 
-            key={item.id} 
-            isCompleted={item.isCompleted} 
-            title={item.title}
+            key={item.id}
+            onTaskDone={() => handleTAskDone(item.id)}
+            onTaskDeleted={() => handleTaskDeleted(item.id)} 
+            {...item}
           />
           )}
           ListEmptyComponent={<Empty/>}
